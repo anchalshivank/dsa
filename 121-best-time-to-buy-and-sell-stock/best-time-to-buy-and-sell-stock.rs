@@ -1,27 +1,15 @@
 impl Solution {
     pub fn max_profit(prices: Vec<i32>) -> i32 {
-        
-        let mut mbp = i32::MAX;
-        let mut mp = 0;
+        let (mut buy, mut sell) = (prices[0], 0);
 
-        for price in prices{
-
-            let profit = price-mbp;
-
-            if profit > mp{
-                mp = profit;
+        for &price in &prices[1..] {
+            if price < buy {
+                buy = price;
+            } else if price - buy > sell {
+                sell = price - buy;
             }
-
-            if price< mbp{
-                mbp = price;
-            }
-
         }
 
-
-
-        mp
-
-
+        return sell;
     }
 }
