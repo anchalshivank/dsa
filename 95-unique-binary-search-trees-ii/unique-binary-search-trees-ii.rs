@@ -48,23 +48,40 @@ impl Solution {
 
     pub fn combine(curr_val: i32, left_trees: Vec<Option<Rc<RefCell<TreeNode>>>>, right_trees :Vec<Option<Rc<RefCell<TreeNode>>>> ) -> Vec<Option<Rc<RefCell<TreeNode>>>> {
 
-    let mut vec = vec![];
+    // let mut vec = vec![];
 
-    for left_tree in &left_trees{
-        for right_tree in &right_trees{
+    // for left_tree in &left_trees{
+    //     for right_tree in &right_trees{
 
+    //         let curr = Rc::new(RefCell::new(TreeNode::new(curr_val)));
+            
+    //         curr.borrow_mut().left = left_tree.clone();
+    //         curr.borrow_mut().right = right_tree.clone();
+            
+    //         vec.push(Some(curr));
+            
+
+
+    //     }
+    // }
+
+
+    let results = left_trees.iter().map(|left_tree| {
+        right_trees.iter().map(|right_tree|{
+            
             let curr = Rc::new(RefCell::new(TreeNode::new(curr_val)));
-            
-            curr.borrow_mut().left = left_tree.clone();
             curr.borrow_mut().right = right_tree.clone();
+            curr.borrow_mut().left = left_tree.clone();
+            Some(curr)
             
-            vec.push(Some(curr));
-            
+        }).collect::<Vec<_>>()
+    });
+
+    results.flatten().collect()
 
 
-        }
-    }
 
-    vec
+
+    // vec
 }
 }
