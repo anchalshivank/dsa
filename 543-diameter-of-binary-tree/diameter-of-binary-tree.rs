@@ -22,41 +22,22 @@ type A = Option<Rc<RefCell<TreeNode>>>;
 impl Solution {
     pub fn diameter_of_binary_tree(root: A) -> i32 {
         
-        let mut ml = 0;
-        let mut mr = 0;
+        fn diameter(node: A) -> (i32, i32){
 
-        fn height(node: A) -> i32{
-            if let Some(n) = node{
-                let nb = n.borrow();
+            match node{
+                None => (0,0),
+                Some(n) => {
+
                 
-                let left_h = height(nb.left.clone());
-                let right_h = height(nb.right.clone());
-                return 1+left_h.max(right_h)
-
-            }else{
-                0
-            }
-        }
-        
-        fn diameter(node: A) -> i32{
-
-            if let Some(n) = node{
-                let nb = n.borrow();
-                let left_h = height(nb.left.clone());
-                let right_h = height(nb.right.clone());
-                
-                let left_dia = diameter(nb.left.clone());
-                let right_dia = diameter(nb.right.clone());
-
-                return i32::max(left_h + right_h, i32::max(left_dia, right_dia));
-
-            }else{
-                0
+                let (ld, ldia) = diameter(n.borrow().left.clone());
+                let (rd, rdia) = diameter(n.borrow().right.clone());
+                (i32::max(ld, rd) +1, i32::max(ldia, i32::max(rdia, ld+rd)))
+                }
             }
 
         }
 
-        diameter(root)
+        diameter(root).1
     
 
     }
