@@ -41,7 +41,6 @@ impl Solution {
                     };
 
                     if !left_valid{
-                        println!("left not valid");
                         return (0, false);
                     }
 
@@ -54,17 +53,12 @@ impl Solution {
                     };
 
                     if !right_valid {
-                        println!("right not valiud");
                         return (0, false);
                     }
 
-                    println!("{} = {} + {}", nb.val, left_sum , right_sum);
-
                     if nb.val == left_sum + right_sum {
-                        println!("SUm is valid");
                         (left_sum+ right_sum + nb.val, true)
                     }else{
-                            println!("sum not vald");
                         (0, false)
                     }
 
