@@ -18,70 +18,40 @@
 // }
 use std::rc::Rc;
 use std::cell::RefCell;
+type A = Option<Rc<RefCell<TreeNode>>>;
 impl Solution {
-    pub fn generate_trees(n: i32) -> Vec<Option<Rc<RefCell<TreeNode>>>> {
-        Self::generate_trees_range(1,n)
-    }
+    pub fn generate_trees(n: i32) -> Vec<A> {
+        
 
-    pub fn generate_trees_range(start: i32, end: i32) -> Vec<Option<Rc<RefCell<TreeNode>>>>{
+        fn helper(start: i32, end: i32 ) -> Vec<A>{
+            let mut result = Vec::new();
+            if start > end {
+                result.push(None);
+                return result;
+            }
 
-        if start> end {
-            return vec![None];
+                for i in start..=end{
+
+                   
+                    let left_nodes= helper(start, i -1);
+                    let right_nodes = helper(i+1, end);
+                    for ln in &left_nodes{
+                        for rn in &right_nodes{
+                            
+                            let mut node = TreeNode::new(i);
+                            node.left = ln.clone();
+                            node.right = rn.clone();
+                            result.push(Some(Rc::new(RefCell::new(node))));
+                            
+                        }
+                    }
+                }
+                result
+        
+
         }
-        let mut res = vec![];
 
-        for curr_val in start..=end{
-
-            let left_trees  = Self::generate_trees_range(start, curr_val-1);
-            let right_trees = Self::generate_trees_range(curr_val+1, end);
-
-            let trees = Self::combine(curr_val, left_trees, right_trees);
-            
-            res.extend_from_slice(&trees);
-
-        }
-
-        res
+        helper(1, n)
 
     }
-
-
-    pub fn combine(curr_val: i32, left_trees: Vec<Option<Rc<RefCell<TreeNode>>>>, right_trees :Vec<Option<Rc<RefCell<TreeNode>>>> ) -> Vec<Option<Rc<RefCell<TreeNode>>>> {
-
-    // let mut vec = vec![];
-
-    // for left_tree in &left_trees{
-    //     for right_tree in &right_trees{
-
-    //         let curr = Rc::new(RefCell::new(TreeNode::new(curr_val)));
-            
-    //         curr.borrow_mut().left = left_tree.clone();
-    //         curr.borrow_mut().right = right_tree.clone();
-            
-    //         vec.push(Some(curr));
-            
-
-
-    //     }
-    // }
-
-
-    let results = left_trees.iter().map(|left_tree| {
-        right_trees.iter().map(|right_tree|{
-            
-            let curr = Rc::new(RefCell::new(TreeNode::new(curr_val)));
-            curr.borrow_mut().right = right_tree.clone();
-            curr.borrow_mut().left = left_tree.clone();
-            Some(curr)
-            
-        }).collect::<Vec<_>>()
-    });
-
-    results.flatten().collect()
-
-
-
-
-    // vec
-}
 }
