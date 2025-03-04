@@ -20,20 +20,27 @@ use std::rc::Rc;
 use std::cell::RefCell;
 impl Solution {
     pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
-        let mut max_height = 0;
+        
+        fn depth(node: Option<Rc<RefCell<TreeNode>>>, current: i32) -> i32 {
 
-        fn dfs(node: &Option<Rc<RefCell<TreeNode>>>, height: i32, max_height: &mut i32){
+            if let Some(node_rc) = node{
+                let nb = node_rc.borrow();
+                let lh = depth(nb.left.clone(), current+1);
+                let rh = depth(nb.right.clone(), current+1);
 
-            if let Some(n) = node{
+                let max_h = lh.max(rh);
 
-                *max_height = (*max_height).max(height+1);
-                let n_b = n.borrow();
-                dfs(&n_b.left, height + 1, max_height);
-                dfs(&n_b.right, height+1, max_height);
+                max_h
 
+                
+
+            }else{
+                current
             }
+
         }
-        dfs(&root, 0, &mut max_height);
-        max_height
+
+        depth(root, 0)
+
     }
 }
