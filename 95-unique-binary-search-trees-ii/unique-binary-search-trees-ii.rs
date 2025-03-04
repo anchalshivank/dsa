@@ -18,40 +18,52 @@
 // }
 use std::rc::Rc;
 use std::cell::RefCell;
+
 type A = Option<Rc<RefCell<TreeNode>>>;
 impl Solution {
     pub fn generate_trees(n: i32) -> Vec<A> {
         
+        fn helper(start: i32, end: i32) -> Vec<A> {
 
-        fn helper(start: i32, end: i32 ) -> Vec<A>{
             let mut result = Vec::new();
-            if start > end {
+
+            if start> end{
                 result.push(None);
                 return result;
             }
 
-                for i in start..=end{
+            for val in start..=end{
 
-                   
-                    let left_nodes= helper(start, i -1);
-                    let right_nodes = helper(i+1, end);
-                    for ln in &left_nodes{
-                        for rn in &right_nodes{
-                            
-                            let mut node = TreeNode::new(i);
-                            node.left = ln.clone();
-                            node.right = rn.clone();
-                            result.push(Some(Rc::new(RefCell::new(node))));
-                            
-                        }
+                
+
+                let lefts = helper(start, val -1);
+                let rights = helper(val+1, end);
+
+                for left_node in &lefts{
+
+
+                    for right_node in &rights{
+
+                        let mut curr_node = TreeNode::new(val);
+                        curr_node.left = left_node.clone();
+                        curr_node.right = right_node.clone();
+                        let to_push = Some(Rc::new(RefCell::new(curr_node))); 
+                        result.push(to_push);
+
+
+
                     }
-                }
-                result
-        
 
+                } 
+
+
+
+            }
+            result
         }
 
         helper(1, n)
+
 
     }
 }
