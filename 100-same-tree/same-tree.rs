@@ -21,29 +21,30 @@ use std::cell::RefCell;
 impl Solution {
     pub fn is_same_tree(p: Option<Rc<RefCell<TreeNode>>>, q: Option<Rc<RefCell<TreeNode>>>) -> bool {
         
-        fn dfs(p: &Option<Rc<RefCell<TreeNode>>>, q: &Option<Rc<RefCell<TreeNode>>>) -> bool{
-            
-            if p.is_none() && q.is_none(){
-                return true;
-            }
-            else if let (Some(p_node), Some(q_node))  = (p, q){
-                let v1 = p_node.borrow();
-                let v2 = q_node.borrow();
+        match (p,q) {
 
-                if v1.val != v2.val {
+            (Some(p_rc), Some(q_rc)) => {
 
+                let p_b = p_rc.borrow();
+                let q_b = q_rc.borrow();
+                if p_b.val == q_b.val{
+
+                    return Self::is_same_tree(p_b.left.clone(), q_b.left.clone()) && Self::is_same_tree(p_b.right.clone(), q_b.right.clone());
+
+                }else{
                     return false;
-
-
                 }
 
-                return dfs(&v1.left, &v2.left) && dfs(&v1.right, &v2.right);
+            },
 
+            (None, Some(_)) | (Some(_), None) => {
+                false
             }
-            false
+            _ => {
+                true
+            }
 
         }
-        dfs(&p, &q)
 
     }
 }
