@@ -46,7 +46,6 @@ impl Solution {
             // Get the current root value from preorder
             let val = preorder[*index];
             *index += 1;
-            println!("index {}", *index);
 
             // Find the position of the root in the inorder array
             let mid = *map.get(&val).unwrap() as i32;
