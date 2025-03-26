@@ -12,9 +12,9 @@ impl Solution {
         let mut k: i32 = result.len() as i32 -1;
 
         while k >=0 && i < nums.len() as i32  && j >= i{
-            println!("{i} {j} {k}");
+            // println!("{i} {j} {k}");
             let left = square(nums[i as usize]);
-            println!("{j}");
+            // println!("{j}");
             let right = square(nums[j as usize]);
 
             if left > right{
