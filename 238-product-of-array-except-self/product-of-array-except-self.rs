@@ -11,7 +11,7 @@ impl Solution {
         }else{
             true
         }).product();
-        println!("{count}");
+        // println!("{count}");
         
         let mut result = Vec::new();
         for i in 0..nums.len(){
