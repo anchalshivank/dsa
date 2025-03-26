@@ -1,20 +1,24 @@
 impl Solution {
     pub fn max_profit(prices: Vec<i32>) -> i32 {
+        
+        //just sell every time 
+        //means add all increasing thing
 
-        let (mut buy, mut profit) = (prices[0], 0);
+        let mut bp = prices[0];
 
-        for &price in &prices[1..]{
-                
-            if price > buy{
-                profit +=price-buy;
-   
+        let mut tp = 0;
+        for &price in prices.iter(){
+
+            if price>bp {
+                //means we can sell 
+                tp += price - bp;
+
             }
-            buy = price;
-    
+            bp = price;
 
         }
 
-        profit
-        
+        tp
+
     }
 }
