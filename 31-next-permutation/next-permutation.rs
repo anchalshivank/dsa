@@ -1,31 +1,32 @@
 impl Solution {
     pub fn next_permutation(nums: &mut Vec<i32>) {
-
-        //if the array is strictly decreasing 
-        //reverse it 
-        //is ascneding 
-        let mut i : i32= nums.len() as i32 -2;
-
-        while i >=0 && nums[i as usize +1]<=nums[i as usize]{
-
-            i-=1;
-
-        }
-
-
-
-        if i>=0{
-
-            let mut j = nums.len()-1;
-            while nums[j]<=nums[i as usize]{
-                j-=1;
-            }
-            nums.swap(i as usize, j);
-
-        }
-
-        nums[(i as usize+1)..].reverse();
-
         
+        //
+        let n = nums.len() as i32;
+        let mut i = n-1;
+
+        while i>0 && nums[i as usize -1]>=nums[i as usize]{
+            i-=1;
+        }
+
+        if i==0{
+            nums.reverse();
+            return;
+        }
+
+        //Now this nums[i-1]<nums[i]
+
+        //we will swap this element just greater than it.. it shall be againf rom back
+        let mut j = n -1;
+        while j > 0 && nums[j as usize]<=nums[i as usize-1]{
+
+            //
+            j-=1;
+        }
+
+        nums.swap(j as usize, i as usize-1);
+
+        nums[(i as usize)..].reverse()
+
     }
 }
