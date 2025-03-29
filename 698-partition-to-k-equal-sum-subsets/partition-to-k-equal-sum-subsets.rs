@@ -36,7 +36,7 @@ impl Solution {
 
         let target = sum / k;
         let mut nums = nums.clone();
-        nums.sort_unstable_by(|a, b| b.cmp(a)); // Sort descending for optimization
+        // nums.sort_unstable_by(|a, b| b.cmp(a)); // Sort descending for optimization
         let mut used = vec![false; nums.len()];
 
         helper(&nums, &mut used, 0, k, 0, target)
