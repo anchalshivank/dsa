@@ -19,8 +19,6 @@ impl Solution {
                 }
             }
         }
-
-        // println!("{:?}", dp);
         a*a
     }
 }
