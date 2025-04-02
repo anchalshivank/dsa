@@ -1,35 +1,33 @@
 impl Solution {
     pub fn max_product(mut nums: Vec<i32>) -> i32 {
         
-        let mut prod = 1;
-        let mut max = i32::MIN;
-        for (index, &num) in nums.iter().enumerate(){
+    
+        let mut pre = 1;
 
-            prod = prod*num;
-            max = max.max(prod);
-            if prod == 0{
-                prod = 1;
+        let mut suff = 1;
+        let mut ans = i32::MIN;
+        for i in 0..nums.len(){
+
+            if pre == 0 {
+                pre = 1;
+            }
+            if suff == 0 {
+                suff = 1;
             }
 
+            pre *=nums[i];
+            suff *= nums[nums.len()-i - 1];
 
-
+            ans = i32::max(ans, i32::max(pre, suff));
 
         }
 
-        prod = 1;
+        return ans
 
-        for &num in nums.iter().rev(){
+        
 
-            prod *=num;
-            max = max.max(prod);
 
-            if prod == 0{
-                prod = 1;
-            }
 
-        }
-
-        return max
         
         
 
