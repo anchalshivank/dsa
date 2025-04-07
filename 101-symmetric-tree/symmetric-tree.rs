@@ -18,43 +18,40 @@
 // }
 use std::rc::Rc;
 use std::cell::RefCell;
+type A = Rc<RefCell<TreeNode>>;
 impl Solution {
-    pub fn is_symmetric(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
+    pub fn is_symmetric(root: Option<A>) -> bool {
 
-            fn dfs(p1: &Option<Rc<RefCell<TreeNode>>>, p2: &Option<Rc<RefCell<TreeNode>>>) -> bool{
+        fn dfs(node_a: Option<A>, node_b: Option<A>) -> bool{
 
-                if p1.is_none() && p2.is_none(){
-                    true
-                }else if let (Some(p1_node), Some(p2_node)) = (p1, p2){
+            match (node_a, node_b){
 
-                    let p1b = p1_node.borrow();
-                    let p2b = p2_node.borrow();
+                (Some(node_a_rc), Some(node_b_rc)) => {
+                    let (mut a, mut b) = (node_a_rc.borrow(), node_b_rc.borrow());
+                    if a.val == b.val{
 
-                    if p1b.val != p2b.val{
-                        false
+                        dfs(a.left.clone(), b.right.clone()) && dfs(a.right.clone(), b.left.clone())
+
+                    }else{
+                        return false;
                     }
 
-                    else {
-
-                        dfs(&p1b.left, &p2b.right) && dfs(&p1b.right, &p2b.left)
-                    }
-
-
-                }else{
-                    false
                 }
+                (None, None) => true,
+                _ => false
+
 
             }
 
-            if let Some(ref root_rc) = root{
+        }
 
-                let root_b = root_rc.borrow();
-                dfs(&root_b.left, &root_b.right)
+        if let Some(r_rc) = root{
 
-            }else{
-                true
-            }
+            let r_b = r_rc.borrow();
+            return dfs(r_b.left.clone(), r_b.right.clone());
 
-        
+        }
+        true
+                
     }
 }
