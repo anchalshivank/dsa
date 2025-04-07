@@ -30,13 +30,13 @@ impl Solution {
                     let mut node_bm = node_rc.borrow_mut();
                     if node_bm.val > val {
                         node_bm.right = helper(node_bm.right.clone(), val);
-                        return Some(node_rc.clone()); // ✅ clone here
+                        return Some(node_rc.clone()); 
                     }
                 } // now the borrow is fully dropped
 
                 Some(Rc::new(RefCell::new(TreeNode {
                     val,
-                    left: Some(node_rc.clone()), // ✅ clone again
+                    left: Some(node_rc.clone()), 
                     right: None,
                 })))
             } else {
