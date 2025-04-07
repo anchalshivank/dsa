@@ -1,71 +1,34 @@
-// Definition for a binary tree node.
-// #[derive(Debug, PartialEq, Eq)]
-// pub struct TreeNode {
-//   pub val: i32,
-//   pub left: Option<Rc<RefCell<TreeNode>>>,
-//   pub right: Option<Rc<RefCell<TreeNode>>>,
-// }
-// 
-// impl TreeNode {
-//   #[inline]
-//   pub fn new(val: i32) -> Self {
-//     TreeNode {
-//       val,
-//       left: None,
-//       right: None
-//     }
-//   }
-// }
 use std::rc::Rc;
 use std::cell::RefCell;
+
+// Assuming TreeNode is already defined
 impl Solution {
     pub fn construct_maximum_binary_tree(nums: Vec<i32>) -> Option<Rc<RefCell<TreeNode>>> {
+        let mut stack: Vec<Rc<RefCell<TreeNode>>> = Vec::new();
 
+        for num in nums {
+            let curr = Rc::new(RefCell::new(TreeNode::new(num)));
 
-        fn construct(nums: &Vec<i32> , start: usize, end: usize) -> Option<Rc<RefCell<TreeNode>>>{
-
-
-            if start>=end{
-                return None;
-            }
-
-            //first we need to find the max value!!
-            //let's loop for now
-            let mut max = i32::MIN;
-            let mut mi = start;
-            // let muit mi = 
-            // println!("{}-{}", start, end);
-            for (index, &num) in nums[start..end].iter().enumerate(){
-
-                let i = index+ start;
-
-                if num > max{
-                    max = num;
-                    mi = i;
+            // Step 1: Pop all smaller nodes, they become left child
+            while let Some(last) = stack.last() {
+                if last.borrow().val < num {
+                    let popped = stack.pop().unwrap();
+                    curr.borrow_mut().left = Some(popped);
+                } else {
+                    break;
                 }
-
             }
 
-            // println!("max {max}");
+            // Step 2: Top of stack becomes parent, curr is right child
+            if let Some(top) = stack.last() {
+                top.borrow_mut().right = Some(Rc::clone(&curr));
+            }
 
-
-            //Now we know that is the max index
-
-
-            let left_node = construct(nums, start, mi);
-            let right_node = construct(nums, mi+1, end);
-
-            let mut node = TreeNode::new(nums[mi]);
-            node.left = left_node;
-            node.right = right_node;
-
-            Some(Rc::new(RefCell::new(node)))
-
+            // Step 3: Push current node to stack
+            stack.push(curr);
         }
 
-
-        construct(&nums, 0, nums.len())
-        
-
+        // First element in the stack is root
+        stack.first().cloned()
     }
 }
