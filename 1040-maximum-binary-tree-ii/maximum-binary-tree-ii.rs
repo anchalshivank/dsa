@@ -19,7 +19,6 @@
 use std::rc::Rc;
 use std::cell::RefCell;
 
-// Assume TreeNode is defined elsewhere
 type A = Rc<RefCell<TreeNode>>;
 
 impl Solution {
