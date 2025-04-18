@@ -16,43 +16,26 @@
 // }
 impl Solution {
     pub fn swap_pairs(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
-        
-        //Create a dummy head to make swapping easier
-        let mut dummy = Box::new(ListNode{val: 0 , next: head});
+        let mut dummy = Box::new(ListNode { val: 0, next: head });
         let mut prev = &mut dummy;
 
-        while let Some(mut first) = prev.next.take(){
-
-            if let Some(mut second) = first.next.take(){
-
+        while let Some(mut first) = prev.next.take() {
+            if let Some(mut second) = first.next.take() {
                 let rest = second.next.take();
 
                 first.next = rest;
                 second.next = Some(first);
                 prev.next = Some(second);
 
-                if let Some(ref mut new_prev) = prev.next{
-
-                    if let Some(ref mut new_new_prev) = new_prev.next{
-
-                        prev = new_new_prev;
-                        continue;
-                 
-                    }
-
-                }
-            }
-            else{
-
+                // move prev to point to the new tail, which is now first
+                prev = prev.next.as_mut().unwrap().next.as_mut().unwrap();
+            } else {
+                // if there's no second, put first back and break
                 prev.next = Some(first);
-
+                break;
             }
-            break;
         }
 
-
         dummy.next
-
-
     }
 }
