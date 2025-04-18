@@ -14,56 +14,61 @@
 //     }
 //   }
 // }
-use std::collections::BinaryHeap;
-
-
-impl PartialOrd for ListNode{
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering>{
-
-        Some(self.cmp(other))
-
-    }
-}
 
 impl Ord for ListNode{
+
     fn cmp(&self, other: &Self) -> std::cmp::Ordering{
+
         other.val.cmp(&self.val)
+
     }
+
 }
 
+impl PartialOrd for ListNode{
+
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering>{
+        Some(self.cmp(&other))
+    }
+
+}
+
+use std::collections::BinaryHeap;
 impl Solution {
     pub fn merge_k_lists(lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNode>> {
-        
-        let mut bh = BinaryHeap::new();
 
+        //we will use biary heap
+        let mut pq = BinaryHeap::new();
+
+        //the top  element shall be the minium
         for list in lists{
-            bh.push(list);
+            pq.push(list);
         }
+        
+        let mut dummy = Some(Box::new(ListNode::new(1)));
+        let mut curr = &mut dummy;
 
-        let mut result = Some(Box::new(ListNode::new(0)));
-        let mut curr = &mut result;
-
-        while let Some(Some(node)) = bh.pop(){
+        while let Some(Some(mut node)) = pq.pop(){
 
             let new_node = Some(Box::new(ListNode::new(node.val)));
 
+  
             if let Some(next_node) = node.next{
-
-                bh.push(Some(next_node));
-
+                pq.push(Some(next_node));
             }
 
-            if let Some(ref mut c) = curr{
 
-                c.next = new_node;
-                curr = &mut c.next;
-
+            if let Some(ref mut curr_b) = curr{
+                curr_b.next = new_node;
+                curr = &mut curr_b.next;
             }
+
+
+            
 
         }
 
-        result.unwrap().next
-
-
+        dummy.unwrap().next
+        
     }
 }
